@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body id="him">
+    <h1>Hide And Seek</h1>
+
+    <a href="index.html"><button id ="reset"> Home </button></a>  
+    <br />
+
+     <div id="box3">
+      <div id="1"></div>
+      <div id="2"></div>
+      <div id="3"></div>
+      <div id="4"></div>
+      <div id="5"></div>
+      <div id="6"></div>
+      <div id="7"></div>
+      <div id="8"></div>
+      <div id="9"></div>
+      <div id="10"></div>
+      <div id="11"></div>
+      <div id="12"></div>
+      <div id="13"></div>
+      <div id="14"></div>
+      <div id="15"></div>
+      <div id="16"></div>
+    </div>
+    <div id="box2">
+        
+    </div>
+  </body>
+  <script >
+
+let box1 = document.getElementById("box3");
+let box2 = document.getElementById("box2");
+let no_of_clicks = 0;
+let score = 0;
+let gift = 3,
+  bomb = 1;
+  miss = 5+7;
+
+function gameOver(isBomb) {
+  box1.removeEventListener("click", clickHandler);
+  box1.style.display = "none";
+
+  message = document.createElement("p");
+  message.innerHTML = isBomb ? "Better Luck next time!" : "You won";
+  clicks = document.createElement("p");
+  clicks.innerHTML = `Number of Clicks: ${no_of_clicks}`;
+  score = document.createElement("p");
+  score.innerHTML = `Your score: ${isBomb ? 0 : 20 - no_of_clicks}/20`;
+
+  button = document.createElement("button");
+  button.addEventListener("click", () => location.reload());
+  button.innerHTML = "replay game";
+
+  box2.appendChild(clicks);
+  box2.appendChild(score);
+  box2.appendChild(message);
+  box2.appendChild(button);
+}
+
+function clickHandler(e) {
+  if (gift) {
+    if (!e.target.innerHTML) {
+      if (gift && Math.floor(Math.random() * 2)) {
+        e.target.innerHTML = "🎁";
+        e.target.style.fontSize = "6rem";
+        gift--;
+        if (gift == 0) setTimeout(() => gameOver(), 400);
+      } else if (bomb && Math.floor(Math.random() * 2)) {
+        e.target.innerHTML = "💣";
+        e.target.style.fontSize = "6rem";
+        bomb--;
+        setTimeout(() => gameOver(true), 400);
+      } else if (miss) {
+        e.target.innerHTML = "MISS";
+        e.target.style.fontSize="2rem";
+        miss--;
+      } else {
+        if (gift) {
+          e.target.innerHTML = "🎁";
+          e.target.style.fontSize = "6rem";
+          gift--;
+        } else {
+          e.target.innerHTML = "💣";
+          e.target.style.fontSize = "6rem";
+          bomb--;
+        }
+      }
+      no_of_clicks++;
+    } else {
+      alert("already clicked!");
+    }
+  } else {
+    gameOver();
+  }
+}
+
+box1.addEventListener("click", (e) => clickHandler(e));
+
+  </script>
+</html>
